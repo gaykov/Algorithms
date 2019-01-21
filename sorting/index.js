@@ -192,4 +192,40 @@ const quickSort = originalArray => {
   return array;
 };
 
-export { insertionSort, bubbleSort, selectionSort, mergeSort, quickSort };
+const shellSort = originalArray => {
+  const array = [...originalArray];
+
+  let gap = Math.floor(array.length / 2);
+
+  while (gap > 0) {
+    for (let i = 0; i < array.length - gap; i++) {
+      let index = i,
+        indexWithAGap = i + gap;
+
+      while (index >= 0) {
+        if (array[indexWithAGap] < array[index]) {
+          [array[index], array[indexWithAGap]] = [
+            array[indexWithAGap],
+            array[index]
+          ];
+        }
+
+        indexWithAGap = index;
+        index -= gap;
+      }
+    }
+
+    gap = Math.floor(gap / 2);
+  }
+
+  return array;
+};
+
+export {
+  insertionSort,
+  bubbleSort,
+  selectionSort,
+  mergeSort,
+  quickSort,
+  shellSort
+};

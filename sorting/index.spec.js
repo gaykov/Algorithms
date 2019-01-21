@@ -3,7 +3,8 @@ import {
   bubbleSort,
   selectionSort,
   mergeSort,
-  quickSort
+  quickSort,
+  shellSort
 } from "./index";
 
 const getRandomArray = length =>
@@ -48,6 +49,13 @@ describe("Sorting Algorithms", () => {
     it("Should sort random array just like JS's internal sort", () => {
       const randomArray = getRandomArray(20);
       expect(quickSort(randomArray)).toEqual(randomArray.sort((a, b) => a - b));
+    });
+  });
+
+  describe("Shell Sort", () => {
+    it("Should sort random array just like JS's internal sort", () => {
+      const randomArray = getRandomArray(20);
+      expect(shellSort(randomArray)).toEqual(randomArray.sort((a, b) => a - b));
     });
   });
 });
