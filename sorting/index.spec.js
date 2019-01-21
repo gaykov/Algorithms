@@ -1,4 +1,10 @@
-import { insertionSort, bubbleSort, selectionSort, mergeSort } from "./index";
+import {
+  insertionSort,
+  bubbleSort,
+  selectionSort,
+  mergeSort,
+  quickSort
+} from "./index";
 
 const getRandomArray = length =>
   new Array(length).fill().map(() => Math.round(Math.random() * 100));
@@ -35,6 +41,13 @@ describe("Sorting Algorithms", () => {
     it("Should sort random array just like JS's internal sort", () => {
       const randomArray = getRandomArray(20);
       expect(mergeSort(randomArray)).toEqual(randomArray.sort((a, b) => a - b));
+    });
+  });
+
+  describe("Quick Sort", () => {
+    it("Should sort random array just like JS's internal sort", () => {
+      const randomArray = getRandomArray(20);
+      expect(quickSort(randomArray)).toEqual(randomArray.sort((a, b) => a - b));
     });
   });
 });

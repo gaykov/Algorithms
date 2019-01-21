@@ -90,47 +90,106 @@ const mergeSort = originalArray => {
   // Making a copy of an orriginal array to avoid it's modification
   const array = [...originalArray];
 
-  // Recursion's end condition
-  if (array.length <= 1) {
-    return array;
-  }
+  // Merge sort helper that marges 2 sorted array
+  const _mergeSortedArrays = (leftArray, rightArray) => {
+    let resultArray = [];
 
-  // Picking the index right in the middle of array
-  const middleIndex = Math.floor(array.length / 2);
-
-  // Merging 2 sorted arrays
-  return _mergeSortedArrays(
-    mergeSort(array.slice(0, middleIndex)),
-    mergeSort(array.slice(middleIndex, array.length))
-  );
-};
-
-// Merge sort helper that marges 2 sorted array
-const _mergeSortedArrays = (leftArray, rightArray) => {
-  let resultArray = [];
-
-  // Going through both arrays
-  while (leftArray.length && rightArray.length) {
-    // Picking the smallest value at the beginig of each array
-    // and pushing it at the end of sorted array
-    if (leftArray[0] < rightArray[0]) {
-      resultArray.push(leftArray.shift());
-    } else {
-      resultArray.push(rightArray.shift());
+    // Going through both arrays
+    while (leftArray.length && rightArray.length) {
+      // Picking the smallest value at the beginig of each array
+      // and pushing it at the end of sorted array
+      if (leftArray[0] < rightArray[0]) {
+        resultArray.push(leftArray.shift());
+      } else {
+        resultArray.push(rightArray.shift());
+      }
     }
-  }
 
-  // Checking if we have any items left
-  if (leftArray.length > 0) {
-    resultArray = resultArray.concat(leftArray);
-  }
+    // Checking if we have any items left
+    if (leftArray.length > 0) {
+      resultArray = resultArray.concat(leftArray);
+    }
 
-  // Checking if we have any items left
-  if (rightArray.length > 0) {
-    resultArray = resultArray.concat(rightArray);
-  }
+    // Checking if we have any items left
+    if (rightArray.length > 0) {
+      resultArray = resultArray.concat(rightArray);
+    }
 
-  return resultArray;
+    return resultArray;
+  };
+
+  const doTheSort = arrayToSort => {
+    // Recursion's end condition
+    if (arrayToSort.length <= 1) {
+      return arrayToSort;
+    }
+
+    // Picking the index right in the middle of arrayToSort
+    const middleIndex = Math.floor(arrayToSort.length / 2);
+
+    // Merging 2 sorted arrayToSorts
+    return _mergeSortedArrays(
+      mergeSort(arrayToSort.slice(0, middleIndex)),
+      mergeSort(arrayToSort.slice(middleIndex, arrayToSort.length))
+    );
+  };
+
+  return doTheSort(array);
 };
 
-export { insertionSort, bubbleSort, selectionSort, mergeSort };
+/**
+ * https://en.wikipedia.org/wiki/Quicksort
+ */
+const quickSort = originalArray => {
+  // Making a copy of an orriginal array to avoid it's modification
+  const array = [...originalArray];
+
+  // Internal function that's actually doing sorting
+  const doQuickSort = (arrayToSort, lo, hi) => {
+    if (lo < hi) {
+      // Getting a partition index and doing partitions
+      const partitionIndex = partition(arrayToSort, lo, hi);
+
+      // Call QuickSort for left part (from 0 to pivot) of the array
+      doQuickSort(arrayToSort, lo, partitionIndex - 1);
+      // Call QuickSort for left part (from pivot to the end) of the array
+      doQuickSort(arrayToSort, partitionIndex + 1, hi);
+    }
+  };
+
+  // Internal function that implements partitioning
+  const partition = (arrayForPartitioning, lo, hi) => {
+    // Choosing pivot element (currently picking the last one)
+    const pivot = arrayForPartitioning[hi];
+
+    // Aligning all the items that is lower then pivot to the left
+    // of the pivot and all the higher items to the right
+    let i = lo;
+    // Going throught an entire array
+    for (let j = lo; j < hi; j++) {
+      // If the current item is lower than the pivot
+      if (arrayForPartitioning[j] < pivot) {
+        // Swap i and j items
+        [arrayForPartitioning[i], arrayForPartitioning[j]] = [
+          arrayForPartitioning[j],
+          arrayForPartitioning[i]
+        ];
+        // Increasing i's counter
+        ++i;
+      }
+    }
+
+    [arrayForPartitioning[i], arrayForPartitioning[hi]] = [
+      arrayForPartitioning[hi],
+      arrayForPartitioning[i]
+    ];
+
+    return i;
+  };
+
+  doQuickSort(array, 0, array.length - 1);
+
+  return array;
+};
+
+export { insertionSort, bubbleSort, selectionSort, mergeSort, quickSort };
